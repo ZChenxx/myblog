@@ -7,8 +7,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from blog.forms import ArticleForm
-from blog.models import Article
+from blog.forms import ArticleForm, TagForm
+from blog.models import Article, Tag
 
 
 class ArticleListView(ListView):  #当我们使用Django自带的ListView展示所有对象列表时，ListView默认会返回Model.objects.all()。
@@ -80,3 +80,17 @@ class ArticleDeleteView(DeleteView):
 def article_publish(request,pk,slug1):
     article = get_object_or_404(Article,pk=pk,author=request.user)
     article.published()
+
+
+
+@method_decorator(login_required,name='dispatch')
+class TagsCreateView(CreateView):
+    model = Tag
+    form_class = TagForm
+    template_name = 'blog/tag_create_form.html'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if obj.author != self.request.user:
+            raise Http404()
+        return obj

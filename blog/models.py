@@ -94,3 +94,8 @@ class Tag(models.Model):
     def get_article_count(self):
         return Article.objects.filter(tags__slug=self.slug).count()
 
+    def save(self,*args,**kwargs):
+        if not self.id or not self.slug:
+            self.slug = slugify(unidecode.unidecode(self.name))
+
+        super().save(*args,**kwargs)

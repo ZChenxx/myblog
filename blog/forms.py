@@ -1,5 +1,6 @@
 from django import forms
-from .models import Article
+from .models import Article, Tag
+
 
 class ArticleForm(forms.ModelForm):
 
@@ -15,3 +16,12 @@ class ArticleForm(forms.ModelForm):
         }
 
 
+class TagForm(forms.ModelForm):
+
+    class Meta:
+        model = Tag
+        exclude = ['slug']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+
+        }
