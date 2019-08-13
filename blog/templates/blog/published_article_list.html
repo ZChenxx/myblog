@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+
+
+{#    <form action="{% url 'blog:article_search' %}" role="search" method="get">#}
+{#    {% csrf_token %}#}
+{#    <div class="input-group col-md-12">#}
+{#        <input type="text" name="q" id="q" class="form-control" placeholder="搜索文章">#}
+{#        <span class="input-group-btn">#}
+{#            <button class="btn btn-default form-control" type="submit" value="submit">#}
+{#                <span class="glyphicon glyphicon-search"></span>#}
+{#            </button>#}
+{#        </span>#}
+{#    </div>#}
+{#    </form>#}
+{#    page_obj:当前的page对象#}
+    {% if page_obj %}
+        <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>标题</th>
+            <th>类别</th>
+            <th>发布日期</th>
+            <th>查看</th>
+            {% if request.user %}
+            <th>修改</th>
+            <th>删除</th>
+                {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in page_obj %}
+            <tr>
+            <td>{{ article.title }}</td>
+            <td>{{ article.category.name }}</td>
+            <td>{{ article.pub_date | date:"Y-m-d" }}</td>
+            <td><a href="{% url 'blog:article_detail' article.id article.slug %}"><span class="glyphicon-eye-open">查看</span> </a> </td>
+            {% if request.user %}
+                <td> <a href="{% url 'blog:article_update' article.id article.slug %}"><span class="glyphicon glyphicon-wrench">编辑</span></a></td>
+{#            <td><a href="{% url 'blog:article_delete' article.id article.slug %}"><span class="glyphicon glyphicon-trash"></span></a></td>#}
+            {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+        </table>
+    {% else %}
+        <p>没有文章</p>
+    {% endif %}
+
+    {% if is_paginated %}
+        <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a> </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            {% endif %}
+
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                     <li class="page-item active"><span class="page-link"> {{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a> </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+        </ul>
+    {% endif %}
+
+
+{% endblock %}
