@@ -1,5 +1,5 @@
 from django import forms
-from .models import Article, Tag
+from .models import Article, Tag, Category
 
 
 class ArticleForm(forms.ModelForm):
@@ -20,6 +20,18 @@ class TagForm(forms.ModelForm):
 
     class Meta:
         model = Tag
+        exclude = ['slug']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+
+        }
+
+CATEGORY = Category.objects.all()
+
+class CategoryForm(forms.ModelForm):
+    parent_category = forms.ModelChoiceField(queryset=CATEGORY)
+    class Meta:
+        model = Category
         exclude = ['slug']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),

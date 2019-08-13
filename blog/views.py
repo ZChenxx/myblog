@@ -1,14 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from blog.forms import ArticleForm, TagForm
-from blog.models import Article, Tag
+from blog.forms import ArticleForm, TagForm, CategoryForm
+from blog.models import Article, Tag, Category
 
 
 class ArticleListView(ListView):  #当我们使用Django自带的ListView展示所有对象列表时，ListView默认会返回Model.objects.all()。
@@ -83,14 +83,32 @@ def article_publish(request,pk,slug1):
 
 
 
-@method_decorator(login_required,name='dispatch')
-class TagsCreateView(CreateView):
-    model = Tag
-    form_class = TagForm
-    template_name = 'blog/tag_create_form.html'
 
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset=queryset)
-        if obj.author != self.request.user:
-            raise Http404()
-        return obj
+@method_decorator(login_required,name='dispatch')
+def TagCreate(request):
+    tag = Tag.objects.all()
+    form = TagForm
+    if request.method == 'POST':
+        form = TagForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse("blog:tag_add"))
+
+    return render(request,'blog/tag_create_form.html',{'tag':tag,'form':form})
+
+
+@method_decorator(login_required,name='dispatch')
+def CategoryCreate(request):
+    category = Category.objects.all()
+    form = CategoryForm
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse("blog:tag_add"))
+
+    return render(request,'blog/category_create_form.html',{'category':category,'form':form})

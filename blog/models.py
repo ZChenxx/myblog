@@ -67,6 +67,9 @@ class Category(models.Model):
     slug = models.SlugField('slug',max_length=40)
     parent_category = models.ForeignKey('self',verbose_name="父级分类",blank=True,null=True,on_delete=models.CASCADE,default='')
 
+    def __str__(self):
+        return self.name
+
     def get_absolute_url(self):
         return reverse('blog:category_detail',args=[self.slug])
 
@@ -74,8 +77,13 @@ class Category(models.Model):
         if self.category_set.all().count() > 0:
             return True
 
-    def __str__(self):
-        return self.name
+
+
+    def save(self,*args,**kwargs):
+        if not self.id or not self.slug:
+            self.slug = slugify(unidecode.unidecode(self.name))
+
+        super().save(*args,**kwargs)
 
     class Meta:
         verbose_name = "分类"
