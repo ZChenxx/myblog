@@ -25,20 +25,24 @@
 
     {% endif %}
 
-    {% for field in form.visible_fields %}
+    {% for field in form %}
     <div class="form-group col-md-12">
-        {{ field.label_tag }}
         {{ field }}
-        {% if field.errors %}
-            {% for error in field.errors %}
-                 <div class="invalid-feedback">
-              {{ error }}
-            </div>
-            {% endfor %}
-        {% endif %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
     </div>
     {% endfor %}
+{#       <div class="form-group col-md-12">#}
+{#        {{ field.label_tag }}#}
+{#        {{ field.parent_category }}#}
+{#        {% if field.errors %}#}
+{#            {% for error in field.errors %}#}
+{#                 <div class="invalid-feedback">#}
+{#              {{ error }}#}
+{#            </div>#}
+{#            {% endfor %}#}
+{#        {% endif %}#}
+{#        <small class="form-text text-muted">{{ field.help_text }}</small>#}
+{#    </div>#}
+
     <div class="form-group">
      <div class="col-md-12">
     <input type="submit" class="btn btn-primary form-control" value="提交">

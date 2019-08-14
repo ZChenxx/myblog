@@ -84,7 +84,7 @@ def article_publish(request,pk,slug1):
 
 
 
-@method_decorator(login_required,name='dispatch')
+@login_required
 def TagCreate(request):
     tag = Tag.objects.all()
     form = TagForm
@@ -99,16 +99,17 @@ def TagCreate(request):
     return render(request,'blog/tag_create_form.html',{'tag':tag,'form':form})
 
 
-@method_decorator(login_required,name='dispatch')
+@login_required
 def CategoryCreate(request):
-    category = Category.objects.all()
-    form = CategoryForm
+    if request.method == 'GET':
+        category = Category.objects.all()
+        form = CategoryForm()
+        return render(request, 'blog/category_create_form.html', {'category': category, 'form': form})
     if request.method == 'POST':
         form = CategoryForm(request.POST)
-
         if form.is_valid():
-            form.save()
+            name = form.cleaned_data['name']
+            parent_category = form.cleaned_data['parent_category']
+            Category(name=name,parent_category=parent_category).save()
+            return HttpResponseRedirect(reverse("blog:category_add"))
 
-            return HttpResponseRedirect(reverse("blog:tag_add"))
-
-    return render(request,'blog/category_create_form.html',{'category':category,'form':form})

@@ -28,12 +28,7 @@ class TagForm(forms.ModelForm):
 
 CATEGORY = Category.objects.all()
 
-class CategoryForm(forms.ModelForm):
+class CategoryForm(forms.Form):
+    name = forms.CharField()
     parent_category = forms.ModelChoiceField(queryset=CATEGORY)
-    class Meta:
-        model = Category
-        exclude = ['slug']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
 
-        }
