@@ -17,38 +17,71 @@
 {#    </form>#}
 {#    page_obj:当前的page对象#}
     {% if page_obj %}
-        <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>标题</th>
-            <th>类别</th>
-            <th>发布日期</th>
-            <th>查看</th>
-            {% if request.user %}
-            <th>修改</th>
-            <th>删除</th>
-                {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for article in page_obj %}
-            <tr>
-            <td>{{ article.title }}</td>
-            <td>{{ article.category.name }}</td>
-            <td>{{ article.pub_date | date:"Y-m-d" }}</td>
-            <td><a href="{% url 'blog:article_detail' article.id article.slug %}"><span class="glyphicon-eye-open">查看</span> </a> </td>
-            {% if request.user %}
-                <td> <a href="{% url 'blog:article_update' article.id article.slug %}"><span class="glyphicon glyphicon-wrench">编辑</span></a></td>
-{#            <td><a href="{% url 'blog:article_delete' article.id article.slug %}"><span class="glyphicon glyphicon-trash"></span></a></td>#}
-            {% endif %}
-            </tr>
-        {% endfor %}
 
-        </tbody>
-        </table>
-    {% else %}
-        <p>没有文章</p>
-    {% endif %}
+            {% for  post in page_obj %}
+        <article class="post post-{{ post.pk }}">
+            <header class="entry-header">
+                <h1 class="entry-title">
+                    <a href="/article/{{ post.pk }}/{{ post.slug }}">{{ post.title }}</a>
+                </h1>
+                <div class="entry-meta">
+                    <span class="post-category"><a href="#">{{ post.category }}</a></span>
+                    <span class="post-date"><a href="#"><time class="entry-date"
+                                                              datetime="{{ post.create_date }}">{{ post.create_date }}</time></a></span>
+                    <span class="post-author"><a href="#">{{ post.author }}</a></span>
+                    <span class="comments-link"><a href="#">4 评论</a></span>
+                    <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+{#                <p>{{ post.summary }}</p>#}
+                <div class="read-more cl-effect-14">
+                    <a href="/article/{{ post.pk }}/{{ post.slug }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                </div>
+            </div>
+        </article>
+            {% endfor %}
+        {% endif %}
+
+
+
+
+
+
+{#        #}
+{#        <table class="table table-striped">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>标题</th>#}
+{#            <th>类别</th>#}
+{#            <th>发布日期</th>#}
+{#            <th>查看</th>#}
+{#            {% if request.user %}#}
+{#            <th>修改</th>#}
+{#            <th>删除</th>#}
+{#                {% endif %}#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for article in page_obj %}#}
+{#            <tr>#}
+{#            <td>{{ article.title }}</td>#}
+{#            <td>{{ article.category.name }}</td>#}
+{#            <td>{{ article.pub_date | date:"Y-m-d" }}</td>#}
+{#            <td><a href="{% url 'blog:article_detail' article.id article.slug %}"><span class="glyphicon-eye-open">查看</span> </a> </td>#}
+{#            {% if request.user %}#}
+{#                <td> <a href="{% url 'blog:article_update' article.id article.slug %}"><span class="glyphicon glyphicon-wrench">编辑</span></a></td>#}
+{#            <td><a href="{% url 'blog:article_delete' article.id article.slug %}"><span class="glyphicon glyphicon-trash"></span></a></td>#}
+{#            {% endif %}#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{##}
+{#        </tbody>#}
+{#        </table>#}
+{#    {% else %}#}
+{#        <p>没有文章</p>#}
+{#    {% endif %}#}
+{##}
 
     {% if is_paginated %}
         <ul class="pagination">

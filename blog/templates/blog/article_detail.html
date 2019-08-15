@@ -38,4 +38,43 @@
         <a href="#">删除</a>
 
         {% endif %}
+
+     <section class="comment-area" id="comment-area">
+        <hr>
+        <h3>发表评论</h3>
+        <form action="{% url 'comments:post_comment' post.id %}" method="post" class="comment-form">
+            <div class="row">
+                <div class="col-md-4">
+                    {% csrf_token %}
+                    <label for="id_name">{{ form.user.label }}</label>
+                    {{ form.user }}
+                </div>
+                <div class="col-md-4">
+                    <label for="id_email">{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="col-md-12">
+                    <label for="id_comment">{{ form.text.label }}</label>
+                    {{ form.text }}
+                    <button type="submit" class="comment-btn">发表</button>
+                </div>
+            </div>    <!-- row -->
+        </form>
+        <div class="comment-list-panel">
+            <h3>评论列表，共 <span>4</span> 条评论</h3>
+            <ul class="comment-list list-unstyled">
+
+                {% for comment in article.comment_set.all %}
+                            <li class="comment-item">
+                                <span class="nickname">{{ comment.user }}</span>
+                                <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>
+                                <div class="text">
+                                    {{ comment.text }}
+                                </div>
+                            </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
 {% endblock %}
