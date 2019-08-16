@@ -1,57 +1,54 @@
 {% extends "base.html" %}
 
 {% block main %}
+ <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">{{ article.title }}{% if article.status == 'd' %}(草稿){% endif %}</h1>
 
-
-<p>
-类别：
-    {% if article.category.parent_category %}
+            <div class="entry-meta">
+                <span class="post-category">{% if article.category.parent_category %}
     <a href="#">{{ article.category.parent_category.name }}</a>
     {% endif %}
-    <a href="#">{{ article.category }}</a>
-
-</p>
-
-
-    <h3>{{ article.title }}
-        {% if article.status == 'd' %}
-        (草稿)
-        {% endif %}
-    </h3>
-
-    {% if article.status == 'p' %}
-        <p>发布于{{ article.pub_date | date:"Y-m-d" }}   浏览{{ article.views }}</p>
-    {% endif %}
-    <p>{{ article.body }}</p>
-    <p>标签:
-        {% for tag in article.tags.all %}
+    <a href="#">{{ article.category }}</a></span>
+             {% if article.status == 'p' %}
+                <span class="post-date"><a href="#"><time class="entry-date"
+                                                          datetime="{{ article.create_time }}">
+                   {{ article.create_time }}</time></a></span>
+                {% endif %}
+             {% for tag in article.tags.all %}
             <a href="#">{{ tag.name }}</a>
         {% endfor %}
-
-
-    </p>
-
-    {% if article.author == request.user %}
+                <span class="post-author"><a href="#">{{ article.author }}</a></span>
+                <span class="comments-link"><a href="#">4 评论</a></span>
+                <span class="views-count"><a href="#">{{ article.views }} 阅读</a></span>
+            {% if article.author == request.user %}
         {% if article.status == "d" %}
             <a href="#">发布</a> |
             {% endif %} <a href="{% url 'blog:article_update' article.id article.slug %}">编辑</a> |
         <a href="#">删除</a>
 
         {% endif %}
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+
+            {#  /*告诉html， 里面变量的字符串是安全的， 不需要进行转义*/#}
+           {{ article.body | safe }}
+
+        </div>
+    </article>
+
+
+
 
      <section class="comment-area" id="comment-area">
         <hr>
         <h3>发表评论</h3>
-        <form action="{% url 'comments:post_comment' post.id %}" method="post" class="comment-form">
+        <form action="#" method="post" class="comment-form">
             <div class="row">
                 <div class="col-md-4">
                     {% csrf_token %}
                     <label for="id_name">{{ form.user.label }}</label>
-                    {{ form.user }}
-                </div>
-                <div class="col-md-4">
-                    <label for="id_email">{{ form.email.label }}</label>
-                    {{ form.email }}
                 </div>
 
                 <div class="col-md-12">
@@ -65,7 +62,7 @@
             <h3>评论列表，共 <span>4</span> 条评论</h3>
             <ul class="comment-list list-unstyled">
 
-                {% for comment in article.comment_set.all %}
+                {% for comment in comments %}
                             <li class="comment-item">
                                 <span class="nickname">{{ comment.user }}</span>
                                 <time class="submit-date" datetime="{{ comment.created_time }}">{{ comment.created_time }}</time>

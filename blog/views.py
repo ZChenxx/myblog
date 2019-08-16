@@ -6,9 +6,12 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.edit import FormMixin
 
 from blog.forms import ArticleForm, TagForm, CategoryForm
 from blog.models import Article, Tag, Category
+from comments.forms import CommentForm
+from comments.models import Comment
 
 
 class ArticleListView(ListView):  #当我们使用Django自带的ListView展示所有对象列表时，ListView默认会返回Model.objects.all()。
@@ -35,13 +38,59 @@ class ArticleDraftListView(ListView):
         return Article.objects.filter(author=self.request.user).filter(status='d').order_by('-pub_date')
 
 
-class ArticleDetailView(DetailView): # DetailView和EditView都是从URL根据pk或其它参数调取一个对象来进行后续操作。
+class ArticleDetailView(FormMixin,DetailView): # DetailView和EditView都是从URL根据pk或其它参数调取一个对象来进行后续操作。
     model = Article
     template_name = "blog/article_detail.html"
+    form_class = CommentForm
+
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
         obj.viewed()                                          #
         return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleDetailView,self).get_context_data(**kwargs)
+        context['form'] = CommentForm(initial={'article':self.object})
+        context['comments'] = self.object.comment_set.all()
+        return context
+
+    def get_success_url(self):
+        return reverse('blog:article_detail',kwargs={'pk':self.object.pk,'slug1':self.object.slug})
+
+    def post(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment(user=request.user,text=form.cleaned_data['text'],article=self.object)
+            return self.form_valid(comment)
+
+
+    def form_valid(self, comment):
+        comment.save()
+        return super(ArticleDetailView,self).form_valid(comment)
+
+
+
+#     源码：
+#         def get_success_url(self):
+#         """Return the URL to redirect to after processing a valid form."""
+#         if not self.success_url:
+#             raise ImproperlyConfigured("No URL to redirect to. Provide a success_url.")
+#         return str(self.success_url)  # success_url may be lazy
+#
+#     def form_valid(self, form):
+#         """If the form is valid, redirect to the supplied URL."""
+#         return HttpResponseRedirect(self.get_success_url())
+#
+#     def form_invalid(self, form):
+#         """If the form is invalid, render the invalid form."""
+#         return self.render_to_response(self.get_context_data(form=form))
+
+
+
+
+
+
 
 @method_decorator(login_required,name='dispatch')
 class ArticleCreateView(CreateView):

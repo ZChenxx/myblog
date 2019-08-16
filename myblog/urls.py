@@ -21,4 +21,5 @@ urlpatterns = [
     path('accounts/',include('allauth.urls')),
     path('accounts/', include('myaccount.urls')),
     path('blog/',include('blog.urls')),
+    # path('comments/',include('comments.urls'))
 ]
