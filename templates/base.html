@@ -44,9 +44,9 @@
           <a class="brand" href="{% url 'blog:article_list' %}">Project name</a>
 {#          <div class="nav-collapse collapse">#}
             <ul class="nav">
-              <li ><a href="/accounts/login/">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li ><a href="{% url 'myaccount:profile' %}">个人空间</a></li>
+              <li><a href="{% url 'blog:article_create' %}">写博客</a></li>
+              <li><a href="#">联系</a></li>
 
             </ul>
                 {% if request.user %}
