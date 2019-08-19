@@ -39,31 +39,31 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'blog',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
     'myaccount',
     'comments',
 ]
-SITE_ID = 1
+# SITE_ID = 1
 
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_REQUIRED = True #要求用户注册时必须填写email，默认False，email是选填的。
-ACCOUNT_SIGNUP_FORM_CLASS = 'myaccount.forms.SignupForm'
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+# ACCOUNT_EMAIL_REQUIRED = True #要求用户注册时必须填写email，默认False，email是选填的。
+# ACCOUNT_SIGNUP_FORM_CLASS = 'myaccount.forms.SignupForm'
 
-AUTHENTICATION_BACKENDS = (
-    #django admin所使用的用户登陆与django-allauth无关
-    'django.contrib.auth.backends.ModelBackend',
-    #特定身份验证方法，例如通过电子邮件登录
-    'allauth.account.auth_backends.AuthenticationBackend'
-)
-
-EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = '446069867@qq.com'
-EMAIL_HOST_PASSWORD = 'rzdttmjqabdmbjcj'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = '446069867@qq.com'
+# AUTHENTICATION_BACKENDS = (
+#     #django admin所使用的用户登陆与django-allauth无关
+#     'django.contrib.auth.backends.ModelBackend',
+#     #特定身份验证方法，例如通过电子邮件登录
+#     'allauth.account.auth_backends.AuthenticationBackend'
+# )
+#
+# EMAIL_HOST = 'smtp.qq.com'
+# EMAIL_PORT = 25
+# EMAIL_HOST_USER = '446069867@qq.com'
+# EMAIL_HOST_PASSWORD = 'rzdttmjqabdmbjcj'
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = '446069867@qq.com'
 
 
 MIDDLEWARE = [

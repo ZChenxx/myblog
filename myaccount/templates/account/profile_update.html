@@ -2,7 +2,7 @@
 
 {% block main %}
 {% if user.is_authenticated %}
-<a href="{% url 'myaccount:profile_update' %}">Update Profile</a> | <a href="{% url 'account_email' %}">Manage Email</a>   | <a href="{% url 'account_change_password' %}">Change Password</a> |<a href="{% url 'account_logout' %}">Logout</a>
+<a href="{% url 'myaccount:profile_update' %}">更改个人信息</a> |
 {% endif %}
 
 
