@@ -21,7 +21,7 @@ class Article(models.Model):
     # 使得你的URL更加的易读（或者也能规避一些额外的问题）
     slug = models.SlugField('slug',max_length=60,blank=True)
     body = models.TextField('正文')
-    # summary = models.CharField(max_length=200,blank=True,verbose_name="博客摘要")
+    summary = models.CharField(max_length=200,blank=True,verbose_name="博客摘要")
     pub_date = models.DateTimeField('发布时间',null=True)
     create_date = models.DateTimeField('创建时间',auto_now_add=True) #添加时的时间，更新对象不会有变动
     mod_date = models.DateTimeField('修改时间',auto_now=True) #有修改动作，就会变
@@ -37,7 +37,7 @@ class Article(models.Model):
     def save(self,*args,**kwargs):
         if not self.id or not self.slug:
             self.slug = slugify(unidecode.unidecode(self.title))
-
+        self.summary = self.body[:60]
         super().save(*args,**kwargs)
 
     def clean(self):

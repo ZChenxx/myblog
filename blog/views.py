@@ -102,6 +102,8 @@ class ArticleCreateView(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
+
 @method_decorator(login_required,name='dispatch')
 class ArticleUpdateView(UpdateView):
     model = Article
