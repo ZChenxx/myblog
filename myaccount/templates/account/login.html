@@ -1,5 +1,6 @@
 {% extends 'account/base.html' %}
 {% block main %}
+    <div style="margin:auto;">
     <h2>登录</h2>
     {% if message %}
     {{ message }}
@@ -29,5 +30,5 @@
 <a href="{% url 'myaccount:register' %}">注册</a>
 
 </div>
-
+</div>
 {% endblock %}

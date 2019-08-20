@@ -50,10 +50,10 @@
 
             </ul>
                 {% if request.user.id  is  None %}
-                    <a  class="btn" href="{% url 'myaccount:login' %}">登录</a>
-                    <a class="btn" href="{% url 'myaccount:register' %}">注册</a>
+                    <a  class="btn" style="float: right;" href="{% url 'myaccount:login' %}">登录</a>
+                    <a class="btn" style="float: right;" href="{% url 'myaccount:register' %}">注册</a>
                 {% else %}
-                 <a  class="btn" href="{% url 'myaccount:logout' %}">注销</a>
+                 <a  class="btn" style="float: right;" href="{% url 'myaccount:logout' %}">注销</a>
                 {% endif %}
 {#          </div><!--/.nav-collapse -->#}
         </div>
@@ -63,7 +63,7 @@
     <div class="content-body">
     <div class="container">
         <div class="row">
-            <main class="col-md-8">
+            <main style="display:flex;justify-content:center;">
     {% block main %}
 
 
