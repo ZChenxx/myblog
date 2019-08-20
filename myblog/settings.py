@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'myaccount',
     'comments',
 ]
-# SITE_ID = 1
+SITE_ID = 1
 
 # ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 # ACCOUNT_EMAIL_REQUIRED = True #要求用户注册时必须填写email，默认False，email是选填的。

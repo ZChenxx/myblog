@@ -27,8 +27,8 @@ class Article(models.Model):
     mod_date = models.DateTimeField('修改时间',auto_now=True) #有修改动作，就会变
     status = models.CharField('文章状态',max_length=1,choices=STATUS_CHOICES,default='p')
     views = models.PositiveIntegerField('浏览量',default=0)
-    author = models.ForeignKey(User,verbose_name='作者',on_delete=models.CASCADE,default='')
-    category = models.ForeignKey('Category',verbose_name='分类',on_delete=models.CASCADE,blank=False,null=False,default='')
+    author = models.ForeignKey(User,verbose_name='作者',on_delete=models.CASCADE)
+    category = models.ForeignKey('Category',verbose_name='分类',on_delete=models.CASCADE,blank=False,null=False)
     tags = models.ManyToManyField('Tag',verbose_name='标签集合',blank=True)
 
     def __str__(self):
@@ -37,8 +37,11 @@ class Article(models.Model):
     def save(self,*args,**kwargs):
         if not self.id or not self.slug:
             self.slug = slugify(unidecode.unidecode(self.title))
+
         self.summary = self.body[:60]
         super().save(*args,**kwargs)
+
+
 
     def clean(self):
         if self.status == 'd' and self.pub_date is not None:
@@ -66,7 +69,7 @@ class Article(models.Model):
 class Category(models.Model):
     name = models.CharField('分类名',max_length=30,unique=True)
     slug = models.SlugField('slug',max_length=40)
-    parent_category = models.ForeignKey('self',verbose_name="父级分类",blank=True,null=True,on_delete=models.CASCADE,default='')
+    parent_category = models.ForeignKey('self',verbose_name="父级分类",blank=True,null=True,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

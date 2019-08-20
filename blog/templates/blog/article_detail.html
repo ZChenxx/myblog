@@ -6,6 +6,7 @@
             <h1 class="entry-title">{{ article.title }}{% if article.status == 'd' %}(草稿){% endif %}</h1>
 
             <div class="entry-meta">
+
                 <span class="post-category">{% if article.category.parent_category %}
     <a href="#">{{ article.category.parent_category.name }}</a>
     {% endif %}

@@ -24,7 +24,9 @@
                 <h1 class="entry-title">
                     <a href="{% url 'blog:article_detail' post.id post.slug %}">{{ post.title }}</a>
                 </h1>
+ <p>{{ post.summary }}</p>
                 <div class="entry-meta">
+
                     <span class="post-category"><a href="#">{{ post.category }}</a></span>
                     <span class="post-date"><a href="#"><time class="entry-date"
                                                               datetime="{{ post.create_date }}">{{ post.create_date }}</time></a></span>
@@ -46,47 +48,10 @@
 
 
 
-
-
-{#        #}
-{#        <table class="table table-striped">#}
-{#        <thead>#}
-{#        <tr>#}
-{#            <th>标题</th>#}
-{#            <th>类别</th>#}
-{#            <th>发布日期</th>#}
-{#            <th>查看</th>#}
-{#            {% if request.user %}#}
-{#            <th>修改</th>#}
-{#            <th>删除</th>#}
-{#                {% endif %}#}
-{#        </tr>#}
-{#        </thead>#}
-{#        <tbody>#}
-{#        {% for article in page_obj %}#}
-{#            <tr>#}
-{#            <td>{{ article.title }}</td>#}
-{#            <td>{{ article.category.name }}</td>#}
-{#            <td>{{ article.pub_date | date:"Y-m-d" }}</td>#}
-{#            <td><a href="{% url 'blog:article_detail' article.id article.slug %}"><span class="glyphicon-eye-open">查看</span> </a> </td>#}
-{#            {% if request.user %}#}
-{#                <td> <a href="{% url 'blog:article_update' article.id article.slug %}"><span class="glyphicon glyphicon-wrench">编辑</span></a></td>#}
-{#            <td><a href="{% url 'blog:article_delete' article.id article.slug %}"><span class="glyphicon glyphicon-trash"></span></a></td>#}
-{#            {% endif %}#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{##}
-{#        </tbody>#}
-{#        </table>#}
-{#    {% else %}#}
-{#        <p>没有文章</p>#}
-{#    {% endif %}#}
-{##}
-
     {% if is_paginated %}
         <ul class="pagination">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a> </li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">上一页</a> </li>
         {% else %}
             <li class="page-item disabled"><span class="page-link">Previous</span></li>
             {% endif %}
@@ -100,7 +65,7 @@
             {% endfor %}
 
         {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a> </li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">下一页</a> </li>
         {% else %}
             <li class="page-item disabled"><span class="page-link">Next</span></li>
         {% endif %}

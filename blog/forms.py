@@ -9,13 +9,12 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        exclude = ['author','views','slug','pub_date']
+        exclude = ['author','views','slug','pub_date','summary']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'body': forms.Textarea(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
-            'tags': forms.Select(attrs={'class': 'form-control'}),    ##多对多字段
         }
 
 
@@ -26,7 +25,6 @@ class TagForm(forms.ModelForm):
         exclude = ['slug']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-
         }
 
 CATEGORY = Category.objects.all()
