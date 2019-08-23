@@ -17,10 +17,10 @@ def email_check(email):
     return re.match(pattern,email)
 
 class RegistrationForm(forms.Form):
-    username = forms.CharField(label='用户名',max_length=50)
-    email = forms.EmailField(label='邮箱')
-    password1 = forms.CharField(label='密码',widget=forms.PasswordInput)
-    password2 = forms.CharField(label='确认密码',widget=forms.PasswordInput)
+    username = forms.CharField(label='用户名',max_length=50,widget=forms.PasswordInput(attrs={"class":"form-control"}))
+    email = forms.EmailField(label='邮箱',widget=forms.PasswordInput(attrs={"class":"form-control"}))
+    password1 = forms.CharField(label='密码',widget=forms.PasswordInput(attrs={"class":"form-control"}))
+    password2 = forms.CharField(label='确认密码',widget=forms.PasswordInput(attrs={"class":"form-control"}))
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -67,8 +67,8 @@ class RegistrationForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='用户名',max_length=50)
-    password = forms.CharField(label='密码',widget=forms.PasswordInput)
+    username = forms.CharField(label='用户名',max_length=50,widget=forms.TextInput(attrs={"class":"form-control"}))
+    password = forms.CharField(label='密码',widget=forms.PasswordInput(attrs={'class':"form-control"}))
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

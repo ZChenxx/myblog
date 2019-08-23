@@ -3,33 +3,37 @@
 {% block main %}
  <article class="post post-1">
         <header class="entry-header">
-            <h1 class="entry-title">{{ article.title }}{% if article.status == 'd' %}(草稿){% endif %}</h1>
+            <h1 class="text-left">{{ article.title }}{% if article.status == 'd' %}(草稿){% endif %}</h1>
 
-            <div class="entry-meta">
+            <div class="text-left">
+            {% if article.status == "p" %}
+                    <span class="post-date"><a href="#"><time class="entry-date"
+                                                              datetime="{{ article.create_date }}">{{ article.create_date }}</time></a></span>
+            {% endif %}
 
-                <span class="post-category">{% if article.category.parent_category %}
-    <a href="#">{{ article.category.parent_category.name }}</a>
-    {% endif %}
-    <a href="#">{{ article.category }}</a></span>
-             {% if article.status == 'p' %}
-                <span class="post-date"><a href="#"><time class="entry-date"
-                                                          datetime="{{ article.create_time }}">
-                   {{ article.create_time }}</time></a></span>
-                {% endif %}
-             {% for tag in article.tags.all %}
-            <a href="#">{{ tag.name }}</a>
-        {% endfor %}
+
                 <span class="post-author"><a href="#">{{ article.author }}</a></span>
                 <span class="comments-link"><a href="#">4 评论</a></span>
                 <span class="views-count"><a href="#">{{ article.views }} 阅读</a></span>
-            {% if article.author == request.user %}
-        {% if article.status == "d" %}
+                            <span class="post-category">{% if article.category.parent_category %}
+    <a href="#">{{ article.category.parent_category.name }}</a>
+    {% endif %}
+    <a href="#">{{ article.category }}</a></span>
+                         {% for tag in article.tags.all %}
+            <a href="#">{{ tag.name }}</a>
+        {% endfor %}
+                {% if article.author == request.user %}
+            {% if article.status == "d" %}
             <a href="#">发布</a> |
-            {% endif %} <a href="{% url 'blog:article_update' article.id article.slug %}">编辑</a> |
+            {% elif article.status == "p" %}
+                <a href="{% url 'blog:article_update' article.id article.slug %}">编辑</a> |
         <a href="#">删除</a>
-
+            {% endif %}
+                    {% else %}
+                    <p></p>
         {% endif %}
             </div>
+               <hr>
         </header>
         <div class="entry-content clearfix">
 

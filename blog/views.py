@@ -57,9 +57,12 @@ class ArticleDetailView(FormMixin,DetailView): # DetailView和EditView都是从U
     def get_success_url(self):
         return reverse('blog:article_detail',kwargs={'pk':self.object.pk,'slug1':self.object.slug})
 
+
     def post(self,request,*args,**kwargs):
         self.object = self.get_object()
         form = CommentForm(request.POST)
+        if request.user.id == None:
+            return HttpResponseRedirect(reverse('myaccount:login'))
         if form.is_valid():
             comment = Comment(user=request.user,text=form.cleaned_data['text'],article=self.object)
             return self.form_valid(comment)
