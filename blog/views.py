@@ -64,7 +64,7 @@ class ArticleDetailView(FormMixin,DetailView): # DetailView和EditView都是从U
         if request.user.id == None:
             return HttpResponseRedirect(reverse('myaccount:login'))
         if form.is_valid():
-            comment = Comment(user=request.user,text=form.cleaned_data['text'],article=self.object)
+            comment = Comment(user=request.user,text=form.cleaned_data['text'],article=self.object,reply_id=form.cleaned_data.get('reply_id',0),reply_user=form.cleaned_data.get('reply_user',''))
             return self.form_valid(comment)
 
 

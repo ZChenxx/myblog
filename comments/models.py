@@ -10,4 +10,3 @@ class Comment(models.Model):
     text = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)
     article = models.ForeignKey(Article,on_delete=models.CASCADE)
-
